@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Demonstre seu interesse em participar como voluntário das iniciativas da Solidariedade em Ação em Brasília.">
+  <meta name="theme-color" content="#173f35">
+  <title>Voluntariado | Solidariedade em Ação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css.css">
+  <script src="js.js" defer></script>
+</head>
+<body class="form-page">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Solidariedade em Ação, página inicial">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42C14 36 8 28.8 8 20.7 8 14.8 12.5 10 18.2 10c2.4 0 4.6.9 5.8 2.8C25.2 10.9 27.4 10 29.8 10 35.5 10 40 14.8 40 20.7 40 28.8 34 36 24 42Z"/><path d="M24 36V19m0 8-6-6m6 10 7-7"/></svg>
+        <span class="brand-name">Solidariedade <strong>em Ação</strong></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal">
+        <span class="sr-only">Abrir menu</span><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+      <nav class="site-nav" id="menu-principal" aria-label="Navegação principal">
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="projetos.html">Projetos</a></li>
+          <li><a href="cadastro.html" aria-current="page">Voluntariado</a></li>
+        </ul>
+        <a class="button button-small button-dark nav-cta" href="#formulario">Preencher cadastro <span aria-hidden="true">↓</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="volunteer-layout">
+      <aside class="volunteer-story" aria-labelledby="voluntariado-titulo">
+        <div class="story-content reveal">
+          <p class="eyebrow eyebrow-light"><span></span> Voluntariado</p>
+          <h1 id="voluntariado-titulo">O próximo passo pode ser <em>seu.</em></h1>
+          <p>Conte um pouco sobre você e sobre a forma como gostaria de contribuir. Este cadastro é uma simulação acadêmica e nenhum dado será enviado ou armazenado.</p>
+          <ul class="volunteer-benefits" aria-label="Por que participar">
+            <li><span aria-hidden="true">✓</span><div><strong>Contribua do seu jeito</strong><p>Escolha uma área alinhada aos seus interesses.</p></div></li>
+            <li><span aria-hidden="true">✓</span><div><strong>Amplie conexões</strong><p>Conheça pessoas unidas por um propósito comum.</p></div></li>
+            <li><span aria-hidden="true">✓</span><div><strong>Gere impacto próximo</strong><p>Participe de iniciativas voltadas a Brasília.</p></div></li>
+          </ul>
+        </div>
+        <figure class="story-image reveal reveal-delay">
+          <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=85" alt="Voluntárias sorrindo juntas durante uma atividade comunitária" width="800" height="600">
+          <figcaption>Quando cada pessoa oferece um pouco, a comunidade inteira avança.</figcaption>
+        </figure>
+      </aside>
+
+      <section class="form-section" id="formulario" aria-labelledby="formulario-titulo">
+        <div class="form-wrap reveal">
+          <div class="form-heading">
+            <p class="form-step">Cadastro de interesse</p>
+            <h2 id="formulario-titulo">Vamos nos conhecer</h2>
+            <p>Os campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
+          </div>
+
+          <form id="formCadastro">
+            <fieldset>
+              <legend><span>01</span> Dados pessoais</legend>
+              <div class="form-grid">
+                <div class="field field-full">
+                  <label for="nome">Nome completo <span aria-hidden="true">*</span></label>
+                  <input type="text" id="nome" name="nome" minlength="3" maxlength="100" autocomplete="name" placeholder="Como podemos chamar você?" required>
+                  <small class="field-error" id="erro-nome"></small>
+                </div>
+                <div class="field field-full">
+                  <label for="email">E-mail <span aria-hidden="true">*</span></label>
+                  <input type="email" id="email" name="email" maxlength="120" autocomplete="email" placeholder="voce@exemplo.com" required>
+                  <small class="field-error" id="erro-email"></small>
+                </div>
+                <div class="field">
+                  <label for="cpf">CPF <span aria-hidden="true">*</span></label>
+                  <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Digite o CPF no formato 000.000.000-00" inputmode="numeric" autocomplete="off" required>
+                  <small class="field-error" id="erro-cpf"></small>
+                </div>
+                <div class="field">
+                  <label for="telefone">Telefone <span aria-hidden="true">*</span></label>
+                  <input type="tel" id="telefone" name="telefone" placeholder="(61) 99999-9999" maxlength="15" pattern="\(\d{2}\) \d{5}-\d{4}" title="Digite o telefone no formato (61) 99999-9999" inputmode="tel" autocomplete="tel" required>
+                  <small class="field-error" id="erro-telefone"></small>
+                </div>
+                <div class="field">
+                  <label for="dataNascimento">Data de nascimento <span aria-hidden="true">*</span></label>
+                  <input type="date" id="dataNascimento" name="dataNascimento" autocomplete="bday" required>
+                  <small class="field-error" id="erro-dataNascimento"></small>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>02</span> Onde você está</legend>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="cep">CEP <span aria-hidden="true">*</span></label>
+                  <input type="text" id="cep" name="cep" placeholder="00000-000" maxlength="9" pattern="\d{5}-\d{3}" title="Digite o CEP no formato 00000-000" inputmode="numeric" autocomplete="postal-code" required>
+                  <small class="field-error" id="erro-cep"></small>
+                </div>
+                <div class="field">
+                  <label for="cidade">Cidade <span aria-hidden="true">*</span></label>
+                  <input type="text" id="cidade" name="cidade" minlength="2" maxlength="80" autocomplete="address-level2" placeholder="Sua cidade" required>
+                  <small class="field-error" id="erro-cidade"></small>
+                </div>
+                <div class="field">
+                  <label for="estado">Estado <span aria-hidden="true">*</span></label>
+                  <select id="estado" name="estado" autocomplete="address-level1" required>
+                    <option value="">Selecione</option><option value="AC">Acre</option><option value="AL">Alagoas</option><option value="AP">Amapá</option><option value="AM">Amazonas</option><option value="BA">Bahia</option><option value="CE">Ceará</option><option value="DF">Distrito Federal</option><option value="ES">Espírito Santo</option><option value="GO">Goiás</option><option value="MA">Maranhão</option><option value="MT">Mato Grosso</option><option value="MS">Mato Grosso do Sul</option><option value="MG">Minas Gerais</option><option value="PA">Pará</option><option value="PB">Paraíba</option><option value="PR">Paraná</option><option value="PE">Pernambuco</option><option value="PI">Piauí</option><option value="RJ">Rio de Janeiro</option><option value="RN">Rio Grande do Norte</option><option value="RS">Rio Grande do Sul</option><option value="RO">Rondônia</option><option value="RR">Roraima</option><option value="SC">Santa Catarina</option><option value="SP">São Paulo</option><option value="SE">Sergipe</option><option value="TO">Tocantins</option>
+                  </select>
+                  <small class="field-error" id="erro-estado"></small>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>03</span> Como quer participar</legend>
+              <div class="form-grid">
+                <div class="field field-full">
+                  <label for="area">Área de interesse <span aria-hidden="true">*</span></label>
+                  <select id="area" name="area" required>
+                    <option value="">Escolha uma área</option>
+                    <option value="educacao">Educação</option>
+                    <option value="alimentacao">Segurança alimentar</option>
+                    <option value="eventos">Eventos e atividades comunitárias</option>
+                    <option value="administrativo">Apoio administrativo</option>
+                    <option value="comunicacao">Comunicação</option>
+                  </select>
+                  <small class="field-error" id="erro-area"></small>
+                </div>
+                <div class="field field-full">
+                  <label for="mensagem">Como você gostaria de contribuir?</label>
+                  <textarea id="mensagem" name="mensagem" rows="5" maxlength="500" placeholder="Conte sobre seus interesses, habilidades ou disponibilidade."></textarea>
+                  <div class="field-meta"><span>Opcional</span><span id="contadorMensagem">0 / 500</span></div>
+                </div>
+                <div class="consent field-full">
+                  <input type="checkbox" id="consentimento" name="consentimento" required>
+                  <label for="consentimento">Concordo com a utilização destes dados exclusivamente para a simulação de contato sobre voluntariado. <span aria-hidden="true">*</span></label>
+                  <small class="field-error" id="erro-consentimento"></small>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="form-submit">
+              <button type="submit" class="button button-primary">Enviar interesse <span aria-hidden="true">↗</span></button>
+              <p>Ambiente demonstrativo. Nenhuma informação é transmitida.</p>
+            </div>
+            <div id="mensagemSucesso" class="form-status" role="status" aria-live="polite" tabindex="-1" hidden></div>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div>
+        <a class="brand brand-light" href="index.html" aria-label="Solidariedade em Ação, página inicial">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 42C14 36 8 28.8 8 20.7 8 14.8 12.5 10 18.2 10c2.4 0 4.6.9 5.8 2.8C25.2 10.9 27.4 10 29.8 10 35.5 10 40 14.8 40 20.7 40 28.8 34 36 24 42Z"/><path d="M24 36V19m0 8-6-6m6 10 7-7"/></svg>
+          <span class="brand-name">Solidariedade <strong>em Ação</strong></span>
+        </a>
+        <p>Conectando pessoas, cuidado e oportunidades em Brasília.</p>
+      </div>
+      <nav aria-label="Navegação do rodapé"><p>Navegue</p><a href="index.html">Início</a><a href="projetos.html">Projetos</a><a href="cadastro.html">Voluntariado</a></nav>
+      <div class="footer-location"><p>Onde estamos</p><address>Brasília<br>Distrito Federal</address></div>
+    </div>
+    <div class="container footer-bottom"><p>© <span data-current-year>2026</span> Solidariedade em Ação.</p><p>Projeto acadêmico de Desenvolvimento Front-End para Web.</p></div>
+  </footer>
+</body>
+</html>
