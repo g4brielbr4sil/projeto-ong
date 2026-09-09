@@ -72,6 +72,14 @@
             <p>Os campos marcados com <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> são obrigatórios.</p>
           </div>
 
+          <div class="feedback-alert feedback-alert-info" role="note" aria-labelledby="alerta-demonstracao-titulo">
+            <span class="feedback-alert-icon" aria-hidden="true">i</span>
+            <div>
+              <h3 id="alerta-demonstracao-titulo">Ambiente demonstrativo</h3>
+              <p>Os dados preenchidos nesta atividade não são enviados nem armazenados.</p>
+            </div>
+          </div>
+
           <form id="formCadastro">
             <fieldset>
               <legend><span>01</span> Dados pessoais</legend>
@@ -157,7 +165,6 @@
 
             <div class="form-submit">
               <button type="submit" class="button button-primary">Enviar interesse <span aria-hidden="true">↗</span></button>
-              <p>Ambiente demonstrativo. Nenhuma informação é transmitida.</p>
             </div>
             <div id="mensagemSucesso" class="form-status" role="status" aria-live="polite" tabindex="-1" hidden></div>
           </form>
@@ -165,6 +172,17 @@
       </section>
     </div>
   </main>
+
+  <div class="toast-region">
+    <div id="toastSucesso" class="toast toast-success" hidden>
+      <span class="toast-icon" aria-hidden="true">✓</span>
+      <div role="status" aria-live="polite" aria-atomic="true">
+        <strong>Interesse registrado na demonstração</strong>
+        <p>Nenhum dado foi enviado ou armazenado.</p>
+      </div>
+      <button class="toast-close" type="button" aria-label="Fechar notificação">×</button>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container footer-main">

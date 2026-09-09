@@ -69,6 +69,39 @@ if (form) {
   const message = form.querySelector("#mensagem");
   const messageCounter = form.querySelector("#contadorMensagem");
   const successMessage = form.querySelector("#mensagemSucesso");
+  const successToast = document.querySelector("#toastSucesso");
+  const toastClose = successToast?.querySelector(".toast-close");
+  let toastAutoHideTimer;
+  let toastTransitionTimer;
+
+  function hideSuccessToast() {
+    if (!successToast || successToast.hidden) return;
+
+    window.clearTimeout(toastAutoHideTimer);
+    window.clearTimeout(toastTransitionTimer);
+    successToast.classList.remove("is-visible");
+
+    if (prefersReducedMotion) {
+      successToast.hidden = true;
+      return;
+    }
+
+    toastTransitionTimer = window.setTimeout(() => {
+      successToast.hidden = true;
+    }, 300);
+  }
+
+  function showSuccessToast() {
+    if (!successToast) return;
+
+    window.clearTimeout(toastAutoHideTimer);
+    window.clearTimeout(toastTransitionTimer);
+    successToast.hidden = false;
+    window.requestAnimationFrame(() => successToast.classList.add("is-visible"));
+    toastAutoHideTimer = window.setTimeout(hideSuccessToast, 7000);
+  }
+
+  toastClose?.addEventListener("click", hideSuccessToast);
 
   const onlyNumbers = (value) => value.replace(/\D/g, "");
 
@@ -188,6 +221,7 @@ if (form) {
       error.textContent = "";
     });
     if (messageCounter) messageCounter.textContent = "0 / 500";
+    showSuccessToast();
     successMessage.focus();
   });
 }
