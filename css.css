@@ -73,6 +73,10 @@ img {
   max-width: 100%;
 }
 
+picture {
+  display: contents;
+}
+
 button, input, select, textarea {
   font: inherit;
 }

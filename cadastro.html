@@ -36,8 +36,8 @@
   </header>
 
   <main id="conteudo">
-    <section class="volunteer-layout">
-      <aside class="volunteer-story" aria-labelledby="voluntariado-titulo">
+    <div class="volunteer-layout">
+      <div class="volunteer-story">
         <div class="story-content reveal">
           <p class="eyebrow eyebrow-light"><span></span> Voluntariado</p>
           <h1 id="voluntariado-titulo">O próximo passo pode ser <em>seu.</em></h1>
@@ -49,10 +49,13 @@
           </ul>
         </div>
         <figure class="story-image reveal reveal-delay">
-          <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&w=1200&q=85" alt="Voluntárias sorrindo juntas durante uma atividade comunitária" width="800" height="600">
+          <picture>
+            <source srcset="assets/images/voluntariado.webp" type="image/webp">
+            <img src="assets/images/voluntariado.jpg" alt="Voluntárias sorrindo juntas durante uma atividade comunitária" width="800" height="600">
+          </picture>
           <figcaption>Quando cada pessoa oferece um pouco, a comunidade inteira avança.</figcaption>
         </figure>
-      </aside>
+      </div>
 
       <section class="form-section" id="formulario" aria-labelledby="formulario-titulo">
         <div class="form-wrap reveal">
@@ -153,7 +156,7 @@
           </form>
         </div>
       </section>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
