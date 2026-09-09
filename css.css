@@ -375,6 +375,48 @@ button, a {
   background: #e7f5aa;
 }
 
+.button:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(0) scale(.98);
+}
+
+.button:active:not(:disabled):not([aria-disabled="true"]) span {
+  transform: none;
+}
+
+.button:disabled,
+.button[aria-disabled="true"] {
+  opacity: .58;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.button:disabled span,
+.button[aria-disabled="true"] span {
+  transform: none;
+}
+
+.button-primary:disabled,
+.button-primary[aria-disabled="true"] {
+  background: var(--green);
+}
+
+.button-dark:disabled,
+.button-dark[aria-disabled="true"] {
+  background: var(--green-ink);
+}
+
+.button-ghost:disabled,
+.button-ghost[aria-disabled="true"] {
+  border-color: var(--line);
+  background: rgba(255, 254, 249, .58);
+}
+
+.button-light:disabled,
+.button-light[aria-disabled="true"] {
+  background: var(--lime);
+}
+
 .eyebrow {
   display: flex;
   align-items: center;
