@@ -23,6 +23,7 @@ Apresentar uma organização social fictícia de forma moderna, acessível e pro
 - Estrutura HTML5 semântica
 - Layout responsivo para diferentes tamanhos de tela
 - Navegação mobile
+- Navegação SPA com roteamento por hash
 - Boas práticas de acessibilidade
 - Estados interativos e suporte a `prefers-reduced-motion`
 - Máscaras para CPF, telefone e CEP
@@ -31,7 +32,7 @@ Apresentar uma organização social fictícia de forma moderna, acessível e pro
 
 ## Como executar
 
-O projeto não exige instalação de dependências ou processo de build. Abra o arquivo `html/index.html` diretamente no navegador ou utilize uma extensão de servidor local, como o Live Server.
+O projeto não exige instalação de dependências ou processo de build. Inicie um servidor local, como o Live Server, e abra `html/index.html`. A navegação principal utiliza as rotas `#inicio`, `#projetos` e `#voluntariado` sem recarregar o documento.
 
 ## Observação
 
