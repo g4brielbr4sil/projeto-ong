@@ -31,7 +31,7 @@ Apresentar uma organização social fictícia de forma moderna, acessível e pro
 
 ## Como executar
 
-O projeto não exige instalação de dependências ou processo de build. Abra o arquivo `index.html` diretamente no navegador ou utilize uma extensão de servidor local, como o Live Server.
+O projeto não exige instalação de dependências ou processo de build. Abra o arquivo `html/index.html` diretamente no navegador ou utilize uma extensão de servidor local, como o Live Server.
 
 ## Observação
 
