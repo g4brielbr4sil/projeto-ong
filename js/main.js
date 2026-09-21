@@ -9,6 +9,10 @@ const navCta = document.querySelector(".nav-cta");
 const descriptionMeta = document.querySelector('meta[name="description"]');
 const successToast = document.querySelector("#toastSucesso");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const VOLUNTEER_DRAFT_STORAGE_KEY = "solidariedade-voluntariado-draft-v1";
+const VOLUNTEER_DRAFT_FIELDS = Object.freeze(["nome", "cidade", "estado", "area", "mensagem"]);
+const VOLUNTEER_DRAFT_INPUT_FIELDS = Object.freeze(["nome", "cidade", "mensagem"]);
+const VOLUNTEER_DRAFT_CHANGE_FIELDS = Object.freeze(["estado", "area"]);
 
 if (!app) {
   const pageName = window.location.pathname.split("/").pop();
@@ -378,6 +382,60 @@ function initReveal() {
   revealElements.forEach((element) => revealObserver.observe(element));
 }
 
+function saveFormDraft(form) {
+  const draft = {
+    nome: form.elements.namedItem("nome")?.value ?? "",
+    cidade: form.elements.namedItem("cidade")?.value ?? "",
+    estado: form.elements.namedItem("estado")?.value ?? "",
+    area: form.elements.namedItem("area")?.value ?? "",
+    mensagem: form.elements.namedItem("mensagem")?.value ?? ""
+  };
+
+  try {
+    localStorage.setItem(VOLUNTEER_DRAFT_STORAGE_KEY, JSON.stringify(draft));
+  } catch {
+    // O formulário continua funcional quando o armazenamento estiver indisponível.
+  }
+}
+
+function removeFormDraft() {
+  try {
+    localStorage.removeItem(VOLUNTEER_DRAFT_STORAGE_KEY);
+  } catch {
+    // Falhas de acesso ao armazenamento não devem interromper a experiência.
+  }
+}
+
+function loadFormDraft(form) {
+  try {
+    const storedDraft = localStorage.getItem(VOLUNTEER_DRAFT_STORAGE_KEY);
+    if (!storedDraft) return;
+
+    const draft = JSON.parse(storedDraft);
+    if (!draft || typeof draft !== "object" || Array.isArray(draft)) {
+      removeFormDraft();
+      return;
+    }
+
+    VOLUNTEER_DRAFT_FIELDS.forEach((fieldName) => {
+      const field = form.elements.namedItem(fieldName);
+      const storedValue = draft[fieldName];
+      if (!field || typeof storedValue !== "string") return;
+
+      if (field instanceof HTMLSelectElement) {
+        const hasOption = Array.from(field.options).some((option) => option.value === storedValue);
+        if (hasOption) field.value = storedValue;
+        return;
+      }
+
+      const maximumLength = field.maxLength > -1 ? field.maxLength : storedValue.length;
+      field.value = storedValue.slice(0, maximumLength);
+    });
+  } catch {
+    removeFormDraft();
+  }
+}
+
 function initForm(params, signal) {
   const form = app.querySelector("#formCadastro");
   if (!form) return;
@@ -496,6 +554,8 @@ function initForm(params, signal) {
 
   if (birthDate) birthDate.max = new Date().toISOString().split("T")[0];
 
+  loadFormDraft(form);
+
   if (area) {
     const requestedArea = params.get("area");
     const availableOption = Array.from(area.options).some((option) => option.value === requestedArea);
@@ -509,6 +569,14 @@ function initForm(params, signal) {
     message.addEventListener("input", updateCounter, { signal });
     updateCounter();
   }
+
+  form.addEventListener("input", (event) => {
+    if (VOLUNTEER_DRAFT_INPUT_FIELDS.includes(event.target.name)) saveFormDraft(form);
+  }, { signal });
+
+  form.addEventListener("change", (event) => {
+    if (VOLUNTEER_DRAFT_CHANGE_FIELDS.includes(event.target.name)) saveFormDraft(form);
+  }, { signal });
 
   form.querySelectorAll("input, select, textarea").forEach((input) => {
     input.addEventListener("invalid", () => showFieldError(input), { signal });
@@ -528,6 +596,7 @@ function initForm(params, signal) {
     successMessage.hidden = false;
     successMessage.textContent = "Cadastro simulado com sucesso. Obrigado por querer fazer parte desta transformação.";
     form.reset();
+    removeFormDraft();
     form.querySelectorAll("[aria-invalid]").forEach((input) => {
       input.removeAttribute("aria-invalid");
       input.removeAttribute("aria-describedby");
