@@ -479,29 +479,6 @@ function initForm(params, signal) {
     toastAutoHideTimer = window.setTimeout(hideSuccessToast, 7000);
   }
 
-  const onlyNumbers = (value) => value.replace(/\D/g, "");
-
-  function formatCpf(value) {
-    return onlyNumbers(value)
-      .slice(0, 11)
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d)/, "$1.$2")
-      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-  }
-
-  function formatPhone(value) {
-    const digits = onlyNumbers(value).slice(0, 11);
-
-    if (digits.length <= 2) return digits.replace(/(\d{1,2})/, "($1");
-    if (digits.length <= 6) return digits.replace(/(\d{2})(\d+)/, "($1) $2");
-    if (digits.length <= 10) return digits.replace(/(\d{2})(\d{4})(\d+)/, "($1) $2-$3");
-    return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-  }
-
-  function formatCep(value) {
-    return onlyNumbers(value).slice(0, 8).replace(/(\d{5})(\d+)/, "$1-$2");
-  }
-
   const validationMessages = {
     nome: "Informe seu nome completo.",
     email: "Informe um e-mail válido.",
@@ -540,17 +517,25 @@ function initForm(params, signal) {
     input.removeAttribute("aria-describedby");
   }
 
-  function bindMask(input, formatter) {
-    if (!input) return;
-    input.addEventListener("input", () => {
-      input.value = formatter(input.value);
-      clearFieldError(input);
-    }, { signal });
+  function initInputMasks() {
+    if (typeof window.IMask !== "function") return;
+
+    const maskInstances = [
+      { input: cpf, pattern: "000.000.000-00" },
+      { input: telefone, pattern: "(00) 00000-0000" },
+      { input: cep, pattern: "00000-000" }
+    ].filter(({ input }) => input).map(({ input, pattern }) => {
+      const mask = window.IMask(input, { mask: pattern });
+      mask.on("accept", () => clearFieldError(input));
+      return mask;
+    });
+
+    signal.addEventListener("abort", () => {
+      maskInstances.forEach((mask) => mask.destroy());
+    }, { once: true });
   }
 
-  bindMask(cpf, formatCpf);
-  bindMask(telefone, formatPhone);
-  bindMask(cep, formatCep);
+  initInputMasks();
 
   if (birthDate) birthDate.max = new Date().toISOString().split("T")[0];
 
