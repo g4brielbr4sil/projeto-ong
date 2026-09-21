@@ -34,20 +34,109 @@ const routes = {
     description: "A Solidariedade em Ação conecta pessoas e comunidades em iniciativas de educação, segurança alimentar e inclusão social em Brasília."
   },
   "#projetos": {
-    source: "projetos.html",
+    templateId: "view-projetos",
     title: "Projetos | Solidariedade em Ação",
     description: "Conheça as iniciativas de educação, segurança alimentar e inclusão social da Solidariedade em Ação em Brasília."
   },
   "#voluntariado": {
-    source: "cadastro.html",
+    templateId: "view-voluntariado",
     bodyClass: "form-page",
     title: "Voluntariado | Solidariedade em Ação",
     description: "Cadastre seu interesse em participar como pessoa voluntária das iniciativas da Solidariedade em Ação."
   }
 };
 
-const viewCache = new Map();
-let renderVersion = 0;
+const projectsData = [
+  {
+    id: "educacao",
+    number: "01",
+    icon: "Aa",
+    category: "Educação",
+    pillarDescription: "Reforço escolar, inclusão digital e oficinas que abrem novas perspectivas para crianças e jovens.",
+    badge: { label: "Educação", modifier: "success" },
+    preview: {
+      label: "Educação",
+      title: "Educação para Todos",
+      description: "Aprender muda o jeito de ver o mundo.",
+      image: "educacao",
+      alt: "Estudantes em sala de aula acompanhando uma atividade",
+      width: 900,
+      height: 700
+    },
+    detail: {
+      title: "Educação para Todos",
+      image: "educacao",
+      alt: "Professora orientando estudantes durante uma atividade em sala",
+      lead: "Aprender não deveria depender do CEP. Criamos espaços acolhedores para ampliar repertórios e perspectivas.",
+      objective: "Apoiar crianças e adolescentes no desenvolvimento escolar e no acesso consciente às ferramentas digitais.",
+      activities: [
+        "Reforço e acompanhamento escolar",
+        "Oficinas de inclusão digital",
+        "Circulação de livros e materiais"
+      ],
+      formArea: "educacao"
+    }
+  },
+  {
+    id: "alimentacao",
+    number: "02",
+    icon: "◒",
+    category: "Segurança alimentar",
+    pillarDescription: "Mobilização solidária para apoiar famílias com alimentos e fortalecer redes locais de cuidado.",
+    badge: { label: "Segurança alimentar", modifier: "info" },
+    preview: {
+      label: "Alimentação",
+      title: "Alimento que Transforma",
+      image: "alimentacao",
+      alt: "Voluntários separando alimentos para doação",
+      width: 800,
+      height: 520
+    },
+    detail: {
+      title: "Alimento que Transforma",
+      image: "alimentacao",
+      alt: "Pessoas voluntárias organizando doações de alimentos",
+      lead: "Cuidado também chega à mesa. Mobilizamos redes solidárias para apoiar famílias com respeito e proximidade.",
+      objective: "Contribuir com a segurança alimentar e fortalecer uma rede comunitária de apoio contínuo.",
+      activities: [
+        "Campanhas de arrecadação",
+        "Organização de cestas essenciais",
+        "Distribuição comunitária responsável"
+      ],
+      formArea: "alimentacao"
+    }
+  },
+  {
+    id: "comunidade",
+    number: "03",
+    icon: "◎",
+    category: "Inclusão social",
+    pillarDescription: "Vivências, cultura e capacitação para promover autonomia, cidadania e pertencimento.",
+    badge: { label: "Mobilização comunitária", modifier: "warm" },
+    preview: {
+      label: "Inclusão",
+      title: "Comunidade em Movimento",
+      image: "inclusao-social",
+      alt: "Crianças reunidas em atividade comunitária",
+      width: 800,
+      height: 520
+    },
+    detail: {
+      title: "Comunidade em Movimento",
+      image: "inclusao-social",
+      alt: "Crianças participando juntas de uma atividade comunitária",
+      lead: "Pertencer também transforma. Criamos encontros que estimulam autonomia, convivência e participação cidadã.",
+      objective: "Promover experiências coletivas que valorizem talentos locais, cultura e desenvolvimento comunitário.",
+      activities: [
+        "Oficinas de capacitação",
+        "Atividades culturais e esportivas",
+        "Rodas de conversa e orientação"
+      ],
+      formArea: "eventos"
+    }
+  }
+];
+
 let hasRendered = false;
 let activeViewController = null;
 let revealObserver = null;
@@ -119,30 +208,104 @@ function resolveRoute() {
   return routeState;
 }
 
-async function loadView(route) {
-  if (route.templateId) {
-    const template = document.querySelector(`#${route.templateId}`);
-    if (!template) throw new Error(`Template não encontrado: ${route.templateId}`);
-    return template.innerHTML;
-  }
+function loadView(route) {
+  const template = document.querySelector(`#${route.templateId}`);
+  if (!template) throw new Error(`Template não encontrado: ${route.templateId}`);
+  return template.innerHTML;
+}
 
-  if (!viewCache.has(route.source)) {
-    const viewPromise = fetch(route.source)
-      .then((response) => {
-        if (!response.ok) throw new Error(`Não foi possível carregar ${route.source}.`);
-        return response.text();
-      })
-      .then((html) => {
-        const parsedDocument = new DOMParser().parseFromString(html, "text/html");
-        const main = parsedDocument.querySelector("main");
-        if (!main) throw new Error(`A view ${route.source} não possui um elemento main.`);
-        return main.innerHTML;
-      });
+function pillarTemplate(project) {
+  return `
+    <article class="pillar-item reveal">
+      <span class="pillar-number">${project.number}</span>
+      <div class="pillar-icon" aria-hidden="true">${project.icon}</div>
+      <div><h3>${project.category}</h3><p>${project.pillarDescription}</p></div>
+      <a href="#projetos/${project.id}" aria-label="Conhecer o projeto de ${project.category.toLowerCase()}">↗</a>
+    </article>`;
+}
 
-    viewCache.set(route.source, viewPromise);
-  }
+function projectPreviewTemplate(project, isLarge = false) {
+  const { preview } = project;
+  const description = preview.description ? `<p>${preview.description}</p>` : "";
 
-  return viewCache.get(route.source);
+  return `
+    <article class="project-preview${isLarge ? " project-preview-large" : ""} reveal">
+      <a href="#projetos/${project.id}" aria-label="Conhecer ${preview.title}">
+        <picture>
+          <source srcset="../imagens/${preview.image}.webp" type="image/webp">
+          <img src="../imagens/${preview.image}.jpg" alt="${preview.alt}" width="${preview.width}" height="${preview.height}">
+        </picture>
+        <div class="preview-overlay"><span>${preview.label}</span><h3>${preview.title}</h3>${description}</div>
+      </a>
+    </article>`;
+}
+
+function projectBadgeTemplate(project) {
+  return `<li><span class="feedback-badge feedback-badge-${project.badge.modifier}">${project.badge.label}</span></li>`;
+}
+
+function activityTemplate(activity, index) {
+  return `<li><span>${String(index + 1).padStart(2, "0")}</span> ${activity}</li>`;
+}
+
+function projectDetailTemplate(project, index) {
+  const { detail } = project;
+  const activities = detail.activities.map(activityTemplate).join("");
+
+  return `
+    <div class="project-detail${index % 2 === 1 ? " project-detail-alt" : ""}" id="${project.id}">
+      <div class="container project-detail-grid">
+        <div class="project-detail-media reveal">
+          <span class="project-index">${project.number} / ${String(projectsData.length).padStart(2, "0")}</span>
+          <picture>
+            <source srcset="../imagens/${detail.image}.webp" type="image/webp">
+            <img src="../imagens/${detail.image}.jpg" alt="${detail.alt}" width="900" height="720">
+          </picture>
+        </div>
+        <article class="project-detail-copy reveal reveal-delay">
+          <p class="eyebrow"><span></span> ${project.category}</p>
+          <h2 id="${project.id}-titulo">${detail.title}</h2>
+          <p class="project-lead">${detail.lead}</p>
+          <div class="project-objective"><h3>Nosso objetivo</h3><p>${detail.objective}</p></div>
+          <ul class="impact-list" aria-label="Atividades do projeto">${activities}</ul>
+          <a class="button button-primary" href="#voluntariado?area=${detail.formArea}">Quero contribuir <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </div>`;
+}
+
+function renderPillars(projects) {
+  return projects.map(pillarTemplate).join("");
+}
+
+function renderFeaturedProjects(projects) {
+  const [featuredProject, ...otherProjects] = projects;
+  const featured = projectPreviewTemplate(featuredProject, true);
+  const stack = otherProjects.map((project) => projectPreviewTemplate(project)).join("");
+
+  return `${featured}<div class="featured-stack">${stack}</div>`;
+}
+
+function renderProjectBadges(projects) {
+  return projects.map(projectBadgeTemplate).join("");
+}
+
+function renderProjectDetails(projects) {
+  return projects.map(projectDetailTemplate).join("");
+}
+
+function renderDynamicComponents() {
+  const componentRenderers = {
+    "home-pillars": renderPillars,
+    "featured-projects": renderFeaturedProjects,
+    "project-badges": renderProjectBadges,
+    "project-details": renderProjectDetails
+  };
+
+  app.querySelectorAll("[data-component]").forEach((container) => {
+    const renderComponent = componentRenderers[container.dataset.component];
+    if (renderComponent) container.innerHTML = renderComponent(projectsData);
+  });
 }
 
 function convertInternalHref(href, routeKey) {
@@ -397,19 +560,18 @@ function scrollToRouteSection(section) {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-async function renderRoute() {
-  const currentRender = ++renderVersion;
+function renderRoute() {
   const routeState = resolveRoute();
   const route = routes[routeState.key];
   app.setAttribute("aria-busy", "true");
 
   try {
-    const viewHtml = await loadView(route);
-    if (currentRender !== renderVersion) return;
+    const viewHtml = loadView(route);
 
     cleanupActiveView();
     activeViewController = new AbortController();
     app.innerHTML = viewHtml;
+    renderDynamicComponents();
     app.dataset.route = routeState.key.slice(1);
     app.dataset.routeSection = routeState.section;
     app.removeAttribute("aria-busy");
