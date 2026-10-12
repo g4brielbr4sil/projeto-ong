@@ -16,3 +16,17 @@ Desktop.ini
 
 # Capturas locais para entrega acadêmica
 evidencias/
+
+# Segredos e dados locais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+*.db
+*.sqlite
+*.sqlite3

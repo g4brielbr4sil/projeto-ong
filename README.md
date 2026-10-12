@@ -36,4 +36,4 @@ O projeto não exige instalação de dependências ou processo de build. Inicie 
 
 ## Observação
 
-O formulário é exclusivamente demonstrativo. Nenhuma informação preenchida é enviada ou armazenada.
+O formulário é exclusivamente demonstrativo e não envia informações ao servidor. Durante o preenchimento, um rascunho com nome, cidade, estado, área de interesse e mensagem é salvo no `localStorage` do navegador. CPF, telefone, CEP, e-mail e data de nascimento não entram nesse rascunho. Os dados salvos são apagados após o envio simulado.
